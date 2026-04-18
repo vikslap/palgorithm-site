@@ -11,9 +11,7 @@ export default function AnimatedHome({ data }: { data: any }) {
         transition={{ duration: 1.5, ease: "easeOut" }}
         className="max-w-3xl text-center"
       >
-        <p className="text-xs font-semibold tracking-widest text-zinc-400 uppercase mb-6">
-          Notes on Learning & Logic
-        </p>
+        
         
         <h1 className="text-5xl md:text-6xl font-serif italic text-zinc-800 mb-8 leading-tight">
           {data?.title || "Palgorithm"}
