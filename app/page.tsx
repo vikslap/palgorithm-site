@@ -1,3 +1,5 @@
+export const revalidate = 10; // This tells Vercel to fetch fresh data every 10 seconds
+
 import { client } from '../sanity'
 
 export default async function Home() {
