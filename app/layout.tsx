@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, DM_Serif_Display } from "next/font/google";
 import "./globals.css";
+import Navbar from "./components/Navbar";
 
 // Our "Industrial" Sans-Serif (for tech details)
 const inter = Inter({ 
@@ -32,6 +33,7 @@ export default function RootLayout({
     >
       {/* Selection color added to body to give that premium personal touch */}
       <body className="min-h-full flex flex-col selection:bg-zinc-200 selection:text-zinc-900">
+        <Navbar />
         {children}
       </body>
     </html>
