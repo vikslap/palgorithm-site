@@ -1,26 +1,41 @@
-import { client } from '../sanity';
-// We use the @ alias to tell TypeScript exactly where to look from the root
+import { client } from '../sanity'; 
 import AnimatedHome from '@/app/AnimatedHome';
 
 export const revalidate = 10;
 
-// Defining the 'shape' of our data helps TypeScript stay calm
+// This defines the "shape" of your data so TypeScript stays happy
 interface HomeData {
   landing: {
     title?: string;
     tagline?: string;
   };
-  posts: any[];
+  posts: {
+    _id: string;
+    title: string;
+    slug: { current: string };
+    excerpt?: string;
+    category?: string;
+    tags?: string[];
+    publishedAt?: string;
+  }[];
 }
 
 export default async function Home() {
   const query = `{
     "landing": *[_type == "landingPage"][0],
-    "posts": *[_type == "post"] | order(publishedAt desc) [0...5]
+    "posts": *[_type == "post"] | order(publishedAt desc) [0...5] {
+      _id,
+      title,
+      slug,
+      excerpt,
+      category,
+      tags,
+      publishedAt
+    }
   }`;
   
-  // We fetch with the <HomeData> type to ensure data.landing and data.posts are recognized
-  const data = await client.fetch<HomeData>(query) || { landing: {}, posts: [] };
+  // Fetching with the <HomeData> type ensures everything is recognized
+  const data = await client.fetch<HomeData>(query) || { landing: { title: "", tagline: "" }, posts: [] };
 
   return (
     <AnimatedHome 

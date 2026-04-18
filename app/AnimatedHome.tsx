@@ -59,6 +59,16 @@ export default function AnimatedHome({ data, posts }: { data: any, posts: any[] 
                 className="group"
               >
                 <div className="flex flex-col space-y-4">
+                  
+                  {/* Category Badge - High contrast, small font */}
+                  {post.category && (
+                    <div className="flex">
+                      <span className="px-2 py-0.5 text-[8px] font-black uppercase tracking-[0.2em] bg-zinc-100 text-zinc-400 rounded-sm">
+                        {post.category}
+                      </span>
+                    </div>
+                  )}
+
                   <Link href={`/posts/${post.slug?.current}`}>
                     <h3 className="font-serif text-3xl md:text-4xl italic text-zinc-800 group-hover:text-indigo-600 transition-colors duration-500 cursor-pointer">
                       {post.title}
@@ -69,6 +79,17 @@ export default function AnimatedHome({ data, posts }: { data: any, posts: any[] 
                     <p className="font-sans text-base text-zinc-500 leading-relaxed line-clamp-2 font-light">
                       {post.excerpt}
                     </p>
+                  )}
+
+                  {/* Tags - Subtle, lowercase, italicized */}
+                  {post.tags && post.tags.length > 0 && (
+                    <div className="flex flex-wrap gap-x-3 gap-y-1">
+                      {post.tags.map((tag: string) => (
+                        <span key={tag} className="text-[10px] text-zinc-300 font-light lowercase italic">
+                          #{tag.replace(/\s+/g, '')}
+                        </span>
+                      ))}
+                    </div>
                   )}
 
                   <div className="flex items-center pt-2">
