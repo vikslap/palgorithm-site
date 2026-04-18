@@ -146,11 +146,20 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
           <PortableText value={post.body} components={ptComponents} />
         </div>
 
-        {post.tags && (
-          <div className="mt-16 flex flex-wrap gap-3">
-            {post.tags.map((tag: string) => (
-              <span key={tag} className="text-[10px] text-zinc-400 font-light italic lowercase">#{tag.replace(/\s+/g, '')}</span>
-            ))}
+        {/* Updated Tag Badge Section */}
+        {post.tags && post.tags.length > 0 && (
+          <div className="mt-16 pt-8 border-t border-zinc-100">
+            <p className="text-[10px] font-bold tracking-widest text-zinc-300 uppercase mb-4">Filed Under</p>
+            <div className="flex flex-wrap gap-2">
+              {post.tags.map((tag: string) => (
+                <span 
+                  key={tag} 
+                  className="px-3 py-1 rounded-full border border-zinc-200 text-[11px] font-medium text-zinc-500 hover:bg-zinc-50 hover:text-zinc-900 transition-colors cursor-default"
+                >
+                  {tag}
+                </span>
+              ))}
+            </div>
           </div>
         )}
 
