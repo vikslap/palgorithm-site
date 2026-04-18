@@ -5,7 +5,7 @@ import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { coldarkDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import { Lightbulb, Info, AlertTriangle } from 'lucide-react';
 import BodyAccordion from '@/app/components/BodyAccordion'; 
-import VideoPlayer from '@/app/components/VideoPlayer'; // Integrated Fix
+import VideoPlayer from '@/app/components/VideoPlayer'; 
 import Image from 'next/image';
 import { urlFor } from '@/sanity';
 
@@ -13,18 +13,41 @@ export const revalidate = 10;
 
 const ptComponents: any = {
   types: {
-    image: ({ value }: any) => (
-      <figure className="my-12">
-        <Image 
-          src={urlFor(value).url()} 
-          alt={value.alt || "Palgorithm visual"} 
-          width={800} 
-          height={500} 
-          className="rounded-xl shadow-sm"
-        />
-        {value.caption && <figcaption className="mt-3 text-center text-xs text-zinc-400 italic">{value.caption}</figcaption>}
-      </figure>
-    ),
+    image: ({ value }: any) => {
+      // 1. Map Sizes to widths
+      const sizeClasses: any = {
+        standard: 'max-w-2xl mx-auto',
+        wide: 'max-w-5xl -mx-4 md:-mx-32', // Negative margins pull it wider than text
+        small: 'max-w-sm mx-auto',
+      };
+
+      // 2. Map Alignment to floats (ignored if 'wide' is selected)
+      const alignClasses: any = {
+        left: 'md:float-left md:mr-8 md:mb-4',
+        right: 'md:float-right md:ml-8 md:mb-4',
+        center: 'mx-auto text-center',
+      };
+
+      const selectedSize = sizeClasses[value.size] || sizeClasses.standard;
+      const selectedAlign = value.size !== 'wide' ? (alignClasses[value.align] || '') : '';
+
+      return (
+        <figure className={`my-12 clear-both ${selectedSize} ${selectedAlign}`}>
+          <Image 
+            src={urlFor(value).url()} 
+            alt={value.alt || "Palgorithm visual"} 
+            width={1400} // High base for wide shots
+            height={800} 
+            className="rounded-xl shadow-md w-full object-cover"
+          />
+          {value.caption && (
+            <figcaption className="mt-3 text-center text-[11px] text-zinc-400 italic">
+              {value.caption}
+            </figcaption>
+          )}
+        </figure>
+      );
+    },
     videoEmbed: ({ value }: any) => {
       if (!value?.url) return null;
       return (
