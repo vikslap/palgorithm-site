@@ -4,23 +4,26 @@ import Link from 'next/link';
 
 export const revalidate = 10;
 
-// Next.js 15 requires params to be a Promise
 export default async function PostPage({ 
   params 
 }: { 
   params: Promise<{ slug: string }> 
 }) {
-  
-  // 1. Wait for the URL parameters to be ready
   const resolvedParams = await params;
   const slug = resolvedParams.slug;
 
-  // 2. Fetch only the post that matches the current URL slug
+  // 1. UPDATED QUERY: We now explicitly ask for category and tags
   const post = await client.fetch(`
-    *[_type == "post" && slug.current == $slug][0]
+    *[_type == "post" && slug.current == $slug][0] {
+      title,
+      publishedAt,
+      excerpt,
+      body,
+      category,
+      tags
+    }
   `, { slug });
 
-  // 3. Handle the "Not Found" state elegantly
   if (!post) {
     return (
       <div className="min-h-screen flex items-center justify-center font-serif italic text-zinc-400 bg-[#fdfdfc]">
@@ -38,6 +41,13 @@ export default async function PostPage({
             ← Back to Archive
           </Link>
           
+          {/* 2. THE CATEGORY KICKER: Tells the reader the pillar immediately */}
+          {post.category && (
+            <p className="text-[10px] font-black uppercase tracking-[0.4em] text-indigo-400 mb-4">
+              {post.category}
+            </p>
+          )}
+
           <p className="font-sans text-[10px] font-bold tracking-[0.4em] text-zinc-400 uppercase mb-8">
             {post.publishedAt 
               ? new Date(post.publishedAt).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) 
@@ -55,12 +65,22 @@ export default async function PostPage({
           )}
         </header>
 
-        {/* The body content from Sanity's Block Editor */}
         <div className="font-sans text-lg leading-relaxed text-zinc-800 space-y-8 prose prose-zinc prose-indigo">
           <PortableText value={post.body} />
         </div>
 
-        <footer className="mt-32 pt-12 border-t border-zinc-100 flex justify-between items-center">
+        {/* 3. TAG FOOTER: Shows specific tools/skills used in this post */}
+        {post.tags && post.tags.length > 0 && (
+          <div className="mt-16 flex flex-wrap gap-3">
+            {post.tags.map((tag: string) => (
+              <span key={tag} className="text-[10px] text-zinc-400 font-light italic lowercase">
+                #{tag.replace(/\s+/g, '')}
+              </span>
+            ))}
+          </div>
+        )}
+
+        <footer className="mt-20 pt-12 border-t border-zinc-100 flex justify-between items-center">
           <span className="text-[10px] font-bold tracking-widest text-zinc-300 uppercase">
             © Palgorithm 2026
           </span>
