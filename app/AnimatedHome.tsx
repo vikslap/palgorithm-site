@@ -7,8 +7,8 @@ export default function AnimatedHome({ data, posts }: { data: any, posts: any[] 
   return (
     <main className="flex min-h-screen flex-col items-center bg-[#fdfdfc] px-6 text-zinc-900 selection:bg-zinc-200">
       
-      {/* Hero Section: The "Cover" of your blog */}
-      <section className="flex min-h-[90vh] flex-col items-center justify-center text-center">
+      {/* Hero Section */}
+      <section className="flex min-h-[90vh] flex-col items-center justify-center text-center pt-32">
         <motion.div 
           initial={{ opacity: 0, filter: "blur(12px)", y: 10 }}
           animate={{ opacity: 1, filter: "blur(0px)", y: 0 }}
@@ -41,7 +41,7 @@ export default function AnimatedHome({ data, posts }: { data: any, posts: any[] 
         </motion.div>
       </section>
 
-      {/* Archive Section: Styled like an editorial column */}
+      {/* Archive Section */}
       <section className="w-full max-w-2xl pb-32">
         <div className="border-t border-zinc-100 pt-16">
           <h2 className="font-sans text-[10px] font-bold tracking-[0.3em] text-zinc-300 uppercase mb-16">
@@ -59,7 +59,6 @@ export default function AnimatedHome({ data, posts }: { data: any, posts: any[] 
                 className="group"
               >
                 <div className="flex flex-col space-y-4">
-                  {/* Link wrapper around the title for navigation */}
                   <Link href={`/posts/${post.slug?.current}`}>
                     <h3 className="font-serif text-3xl md:text-4xl italic text-zinc-800 group-hover:text-indigo-600 transition-colors duration-500 cursor-pointer">
                       {post.title}
@@ -84,6 +83,18 @@ export default function AnimatedHome({ data, posts }: { data: any, posts: any[] 
               </motion.article>
             ))}
           </div>
+
+          {/* New Footer Link for the Full Archive */}
+          {posts && posts.length > 0 && (
+            <div className="mt-32 pt-16 text-center">
+              <Link 
+                href="/archive"
+                className="inline-block px-10 py-4 border border-zinc-200 text-[10px] font-bold tracking-[0.3em] text-zinc-400 uppercase hover:text-zinc-900 hover:border-zinc-900 transition-all duration-300"
+              >
+                View All Insights
+              </Link>
+            </div>
+          )}
 
           {(!posts || posts.length === 0) && (
             <p className="font-serif italic text-zinc-300 text-center py-20">

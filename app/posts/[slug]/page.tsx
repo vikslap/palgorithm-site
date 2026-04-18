@@ -34,7 +34,7 @@ export default async function PostPage({
       <div className="max-w-2xl mx-auto">
         
         <header className="mb-20">
-          <Link href="/" className="inline-block mb-12 text-[10px] font-bold tracking-[0.3em] text-zinc-300 uppercase hover:text-zinc-900 transition-colors">
+          <Link href="/archive" className="inline-block mb-12 text-[10px] font-bold tracking-[0.3em] text-zinc-300 uppercase hover:text-zinc-900 transition-colors">
             ← Back to Archive
           </Link>
           
